@@ -52,8 +52,8 @@
       border-radius: 28px;
       box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr) auto auto auto auto;
       padding: 14px;
       gap: 12px;
       position: relative;
@@ -109,24 +109,25 @@
       background: linear-gradient(135deg, #fff0f6, #ffe1ec);
       border: 1px solid rgba(255, 77, 136, 0.12);
       color: var(--text);
-      padding: 12px 14px;
+      padding: 10px 12px;
       border-radius: 18px;
-      font-size: 0.95rem;
-      line-height: 1.35;
+      font-size: 0.88rem;
+      line-height: 1.25;
       text-align: center;
+      overflow-wrap: break-word;
     }
 
     .game-wrap {
-      flex: 1;
+      min-height: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 0;
+      overflow: hidden;
     }
 
     canvas {
-      width: 100%;
-      max-width: 100%;
+      width: min(100%, 100vw - 56px, 320px);
+      height: auto;
       aspect-ratio: 1 / 1;
       background:
         linear-gradient(var(--grid) 1px, transparent 1px),
@@ -136,6 +137,8 @@
       border-radius: var(--radius);
       box-shadow: inset 0 0 0 1px rgba(255, 77, 136, 0.08);
       touch-action: none;
+      display: block;
+      margin: 0 auto;
     }
 
     .controls {
@@ -265,13 +268,50 @@
         padding: 10px;
       }
 
+      .topbar {
+        padding-top: 2px;
+      }
+
+      h1 {
+        font-size: 1.05rem;
+      }
+
+      .subtitle,
+      .hint,
+      .credit {
+        font-size: 0.78rem;
+      }
+
       .banner {
-        padding: 10px 12px;
-        font-size: 0.88rem;
+        padding: 8px 10px;
+        font-size: 0.8rem;
+        line-height: 1.15;
+      }
+
+      .score-box {
+        min-width: 78px;
+        padding: 8px 10px;
+      }
+
+      .score {
+        font-size: 1.3rem;
+      }
+
+      .arrow-pad {
+        width: min(100%, 210px);
+        gap: 8px;
       }
 
       button {
-        padding: 12px 14px;
+        padding: 11px 12px;
+      }
+
+      .arrow-btn {
+        font-size: 1.2rem;
+      }
+
+      canvas {
+        width: min(100%, 100vw - 52px, 290px);
       }
     }
   </style>
@@ -281,7 +321,7 @@
     <div class="topbar">
       <div class="title-wrap">
         <h1>Joguinho da Cobrinha 💕</h1>
-        <div class="subtitle">Desbloqueie seu prêmio completando 30 pontos</div>
+        <div class="subtitle">Desbloqueie seu prêmio completando 20 pontos</div>
       </div>
       <div class="score-box">
         <div class="score-label">Pontos</div>
@@ -290,7 +330,7 @@
     </div>
 
     <div class="banner">
-      Coma os corações e chegue em <strong>30 pontos</strong> para liberar sua surpresa ❤️
+      Coma os corações e chegue em <strong>20 pontos</strong> para liberar sua surpresa ❤️
     </div>
 
     <div class="game-wrap">
@@ -317,7 +357,7 @@
       <div class="modal">
         <h2>Oi, meu amor 💖</h2>
         <p>
-          Fiz esse joguinho só pra você. Consegue chegar em <strong>30 pontos</strong> para desbloquear seu prêmio?
+          Fiz esse joguinho só pra você. Consegue chegar em <strong>20 pontos</strong> para desbloquear seu prêmio?
         </p>
         <button class="primary" id="overlayStartBtn">Jogar agora</button>
       </div>
@@ -341,14 +381,14 @@
           alt="Foto do casal"
         />
         <div class="love-text">
-          Eu te amo muito minha princesa ❤️<br>
-          Você é o maior presente que já ganhei na minha vida!
+          Eu te amo muito ❤️<br>
+          Você é o meu prêmio favorito nesse mundo inteiro.
         </div>
         <button class="primary" id="playAgainWinBtn">Jogar de novo</button>
         <div class="small">Troque a foto no HTML pela foto de vocês dois</div>
       </div>
     </div>
-      <div class="credit" style="text-align:center;font-size:0.8rem;color:#a04f72;padding-top:4px;">
+      <div class="credit" style="text-align:center;font-size:0.8rem;color:#a04f72;padding-top:2px;">
       Jogo feito por Filipe Gualberto 💖 para Brenda Nickolly
     </div>
   </main>
@@ -375,7 +415,7 @@
 
     const gridCount = 18;
     const tileSize = canvas.width / gridCount;
-    const targetScore = 30;
+    const targetScore = 20;
 
     let snake = [];
     let direction = { x: 1, y: 0 };
